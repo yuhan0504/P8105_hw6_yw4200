@@ -138,15 +138,19 @@ result_filter = result_boot |>
   na.omit()
 
 head(result_boot)
+head(result_filter)
   
 ```
 ```{r}
 # identify the 2.5% and 97.5% quantiles to provide a 95% confidence interval
 
-# CI for R_2
+# CI for R_2 
   quantile(pull(result_boot,r.squared), probs = c(0.025,0.975),na.rm = TRUE) |>
   knitr::kable(digits = 5, col.names = "R_squared")
 
+# CI for R_2 without NA
+  quantile(pull(result_filter,r.squared), probs = c(0.025,0.975),na.rm = TRUE) |>
+  knitr::kable(digits = 5, col.names = "R_squared")
 # CI for log(beta1*beta2)
   quantile(pull(result_filter,log_beta12), probs = c(0.025,0.975),na.rm = TRUE) |>
   knitr::kable(digits = 5,  col.names = "log(beta1*beta2)")
@@ -176,7 +180,7 @@ result_filter |>
   )
 ```
 Comment:
-
+The distribution is left-skewed with the mean of `r mean(result_filter$log_beta12)` and the sd of `r sd(result_filter$log_beta12)`. There are some outliers, so the large samples are useful.
 
 ## Problem 3
 In this problem, you will analyze data gathered to understand the effects of several variables on a child’s birthweight. This dataset, available here, consists of roughly 4000 children and includes the following variables.
@@ -193,8 +197,8 @@ missing_data
 # convert some numeric into factor and label them
 birth_clean <- birthweight |> 
   janitor::clean_names() |>
-  mutate(babysex = factor(babysex, levels = c(1, 2), 
-                     labels = c("Male", "Female")),
+  mutate(babysex = factor(babysex, levels = c(2, 1), 
+                     labels = c("Female", "Male")),
     frace = factor(frace, levels = c(1, 2, 3, 4, 8, 9), 
                    labels = c("White", "Black", "Asian", 
                               "Puerto Rican", "Other", "Unknown")),
