@@ -1,6 +1,6 @@
 ---
 title: "P8105_hw6_yw4200"
-author: "yh"
+author: "yh wang"
 date: "2023-11-29"
 output: github_document
 ---
